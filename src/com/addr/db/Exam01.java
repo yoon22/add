@@ -36,10 +36,14 @@ public class Exam01 {
 		File f = new File(ADDR_FILE_PATH);
 		try {
 			FileReader fr = new FileReader(f);
-			BufferedReader br = new BufferedReader(fr);
+			//파일을 가져오는거 
+			BufferedReader br = new BufferedReader(fr);			
+			//inputSTring만 읽을수있는데 파일리더가 inputString을 줌.... 
+			//라인별로 끊을수 있는거 (한번에 읽는게 아니라 조금씪!)
 			String line ="";
 			List<Map<String,String>> addrList = new ArrayList<>();
 			int cnt = 1;
+			int result = 0;
 			while((line=br.readLine())!=null) {
 				String[] lines = line.split("\\|");
 				Map<String,String> addrMap = new HashMap<>();
@@ -50,14 +54,16 @@ public class Exam01 {
 				
 				if(addrList.size()==1000) {			
 					Long subStime = System.currentTimeMillis();
-					int result = adao.insertAddressList(addrList);
+					result += adao.insertAddressList(addrList);
 					addrList.clear();
-					System.out.println("반영된 건수 : " + result);
-					System.out.println("1000개 insert 완료시간 : " + (System.currentTimeMillis()-subStime));
+					
 				}				
 			}	 
-			adao.insertAddressList(addrList);
+			Long subStime = System.currentTimeMillis();
+			result += adao.insertAddressList(addrList);
 			addrList.clear();
+			System.out.println("반영된 건수 : " + result);
+			System.out.println("insert 완료시간 : " + (System.currentTimeMillis()-subStime));
 			
 		} catch (FileNotFoundException e) {
 			
